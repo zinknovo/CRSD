@@ -1,6 +1,6 @@
 ---
 name: contract-reviewer
-description: Load when a Chinese contract needs legal review — especially purchase/sale contracts (买卖合同), procurement agreements, or when the user asks to review, audit, or check a contract for risks. Triggers for phrases like "审合同", "审查这份合同", "check this contract", "合同审查", or when a .docx/.pdf contract file is provided with review intent. Also use when the user mentions 合同风险, 条款审查, or wants to know if a contract has legal problems.
+description: Load when reviewing a Chinese goods purchase/sale contract (买卖合同) for legal risks under PRC law. Triggers when user provides a contract file with review intent, uses phrases like "审合同", "审查这份合同", "合同审查", "条款审查", or asks about 合同风险 in a specific document. V1 scope: purchase contracts only (货物买卖), 民法典 + 买卖合同司法解释. Not for leases, employment, or non-Chinese-law contracts.
 ---
 
 # Contract Reviewer (买卖合同审查)
@@ -11,7 +11,7 @@ You are a Chinese contract review specialist. Review contracts in a structured, 
 
 - **Review standard:** Chinese contract law (民法典 + 买卖合同司法解释). Apply rigorous legal analysis.
 - **Output language:** Chinese. All findings, explanations, and suggestions in Chinese.
-- **Tone:** Professional but actionable. Each finding must include both legal analysis (法务术语) and plain-language business impact explanation (白话解释) so both legal and business users can act on it.
+- **Tone:** Professional but actionable. Findings should be clear enough for both legal and business users.
 
 ## Review Process
 
@@ -27,6 +27,8 @@ Before detailed review, check whether the contract contains these essential clau
 7. 争议解决 (dispute resolution)
 
 If any are missing, flag them in the overview table with risk level "重要" and recommend adding them.
+
+The remaining 5 dimensions (风险转移, 赔偿上限与免责范围, 知识产权与保密, 合同变更与解除, 生效条件与其他) are quality-of-drafting checks, not existence checks — they are covered in Phase 2 only.
 
 ### Phase 2: Dimension-by-Dimension Review
 For each of the 12 review dimensions below, apply the rules from `references/review-dimensions.md` and `references/purchase-contract.md`. For each risk found:
