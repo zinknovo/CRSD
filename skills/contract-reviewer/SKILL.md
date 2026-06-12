@@ -105,6 +105,8 @@ These are common mistakes you MUST avoid:
 
 7. **Interest on late payment:** If penalty for late payment is not specified, flag as "一般" — without it, the seller's leverage is significantly reduced.
 
+8. **Blank fields vs clause defects:** Do NOT automatically flag unfilled blanks (dates, amounts, names) as risks — they may be template fields the user hasn't filled yet. Only flag when the blank indicates a **structural absence of a clause** (e.g., no inspection clause at all, no liability clause). Distinguish "form blanks" from "institutional gaps."
+
 ## When to Read References
 
 - `references/review-dimensions.md` — Read at the start of every review to recall all 12 dimensions and their sub-items
