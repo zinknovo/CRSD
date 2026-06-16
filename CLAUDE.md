@@ -2,7 +2,7 @@
 
 ## 背景
 
-目标：为法律科技公司开发合同审查 Agent Skill。有法务背景，知道怎么审合同，需要把审查能力转化为 Agent Skill。
+目标：为法律科技公司开发合同审查 Agent Skil。
 
 ## Skill 开发核心原则（来自 Perplexity 实践）
 
