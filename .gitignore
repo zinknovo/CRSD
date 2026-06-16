@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Binary assets (too large for git)
+assets/references/*.pdf
+assets/raw-contracts/*.doc
+assets/raw-contracts/*.docx
+assets/raw-contracts/*.txt
+
+# Eval runtime artifacts
+contract-reviewer-workspace/
+
+# IDE / tool configs
+.claude/
+.DS_Store

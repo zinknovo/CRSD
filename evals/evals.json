@@ -1,0 +1,87 @@
+{
+  "skill_name": "contract-reviewer",
+  "version": "0.2.0",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "请审查这份购销合同，我是买方（甲方/需方），找出所有风险点并按风险等级排列。",
+      "files": ["tests/contracts/contract-4-换电柜采购.txt"],
+      "ground_truth": "tests/ground-truth/contract-4-换电柜采购.md",
+      "expected_output": {
+        "quantitative": {
+          "min_findings": 15,
+          "required_severe": 1,
+          "required_important": 3,
+          "must_include": ["违约金上限0%", "免责条款排除直接损失", "交付-付款联动", "验收期间偏短"]
+        },
+        "qualitative": {
+          "has_overview_table": true,
+          "table_sorted_by_risk": true,
+          "each_finding_has_5_fields": true,
+          "suggestions_are_copy_pasteable": true,
+          "waits_for_user_drill_down": true,
+          "no_vague_suggestions": true
+        }
+      },
+      "assertions": [
+        {"name": "has_overview_table", "description": "Output contains a risk overview table with columns for 审查维度, 风险等级, 问题简述, 条款位置"},
+        {"name": "min_findings_15", "description": "At least 15 risk findings are reported"},
+        {"name": "severe_exclusion_of_direct_loss", "description": "Finds the clause excluding direct losses (免责排除直接损失) as 严重 risk"},
+        {"name": "important_penalty_cap_zero", "description": "Finds the 0% penalty cap (违约金上限0%) as 重要 or 严重 risk"},
+        {"name": "important_delivery_payment_linkage", "description": "Finds the delivery-payment linkage issue (交付-付款联动) as 重要 risk"},
+        {"name": "important_short_inspection_period", "description": "Finds the 15-day inspection period as too short (验收期间偏短) as 重要 risk"},
+        {"name": "finds_missing_party_info", "description": "Flags missing party information (主体信息缺失)"},
+        {"name": "finds_vague_warranty_start", "description": "Flags the vague warranty start date (质保期起算不明)"},
+        {"name": "table_sorted_by_risk", "description": "Overview table rows are sorted by risk level (严重 first)"},
+        {"name": "no_vague_suggestions", "description": "No findings use banned vague phrases like '建议完善' without concrete revision"},
+        {"name": "waits_for_drill_down", "description": "Output ends by asking user which dimension to drill into"},
+        {"name": "distinguishes_blank_from_defect", "description": "Does not flag unfilled template blanks as 严重/重要 structural risks"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "审查这份合同，我是采购方（需方/甲方），给出完整审查报告。",
+      "files": ["tests/contracts/contract-5-化工品采购.txt"],
+      "ground_truth": "tests/ground-truth/contract-5-化工品采购.md",
+      "expected_output": {
+        "quantitative": {
+          "min_findings": 12,
+          "required_severe": 1,
+          "required_important": 4,
+          "must_include": ["异议期限", "标的物信息", "规格书", "交货日期", "付款条件"]
+        },
+        "qualitative": {
+          "has_overview_table": true,
+          "table_sorted_by_risk": true,
+          "each_finding_has_5_fields": true,
+          "suggestions_are_copy_pasteable": true,
+          "waits_for_user_drill_down": true,
+          "no_vague_suggestions": true,
+          "distinguishes_blank_from_missing": true
+        }
+      },
+      "assertions": [
+        {"name": "has_overview_table", "description": "Output contains a risk overview table with columns for 审查维度, 风险等级, 问题简述, 条款位置"},
+        {"name": "min_findings_12", "description": "At least 12 risk findings are reported"},
+        {"name": "severe_blank_objection_period", "description": "Finds the blank objection period (异议期限空白) as 严重 risk"},
+        {"name": "important_blank_subject_matter", "description": "Finds blank subject matter info (标的物信息空白) as 重要 risk"},
+        {"name": "important_vague_payment_terms", "description": "Finds vague payment terms (付款条件模糊) as 重要 risk"},
+        {"name": "important_blank_delivery_date", "description": "Finds blank delivery date (交货日期空白) as 重要 risk"},
+        {"name": "finds_hazardous_chem_compliance", "description": "Flags hazardous chemical compliance issues (危化品合规)"},
+        {"name": "finds_missing_party_info", "description": "Flags missing party information (主体信息缺失)"},
+        {"name": "table_sorted_by_risk", "description": "Overview table rows are sorted by risk level (严重 first)"},
+        {"name": "no_vague_suggestions", "description": "No findings use banned vague phrases like '建议完善' without concrete revision"},
+        {"name": "waits_for_drill_down", "description": "Output ends by asking user which dimension to drill into"},
+        {"name": "distinguishes_blank_from_defect", "description": "Does not flag unfilled template blanks as 严重/重要 structural risks — distinguishes form blanks from clause gaps"}
+      ]
+    }
+  ],
+  "success_criteria": {
+    "trigger_rate": "Skill activates when contract file + review intent is present (target: ≥90%)",
+    "false_trigger_rate": "Skill does NOT activate for non-contract text (target: ≤10%)",
+    "recall": "Fraction of ground-truth risks found (target: ≥85%)",
+    "precision": "Fraction of reported risks that are valid (target: ≥75%)",
+    "format_compliance": "Output matches required table + drill-down structure (target: 100%)",
+    "cross_session_consistency": "Same contract + same prompt produces same core findings across sessions (target: ≥90%)"
+  }
+}
